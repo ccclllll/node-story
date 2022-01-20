@@ -113,7 +113,8 @@ StoryParse.prototype.run = function (start, end, cb) {
         for (let key in result) {
             storyContent += result[key]
         }
-        storyContent = storyContent.replace(/（本章未完，请点击下一页继续阅读）/g, '')
+    
+       // storyContent = storyContent.replace(/（本章未完，请点击下一页继续阅读）/g, '')
         this.writeFile(this.filePath, storyContent)
         cb && cb()
     });

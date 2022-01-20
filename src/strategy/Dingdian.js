@@ -46,6 +46,7 @@ module.exports = {
         // 判断是否有下一页按钮
         let hasNextPage = $('#pb_next')[0].children[0].data.trim() === '下一页'
         let nextPageUrl = ''
+        
         if (hasNextPage) {
             pageIndex = parseInt(pageIndex) + 1
             nextPageUrl = `${pre}_${pageIndex}.html`

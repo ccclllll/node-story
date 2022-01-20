@@ -24,7 +24,7 @@ module.exports = {
         let titleDiv = $('.zhong')[0]
         let title = titleDiv && titleDiv.children[0] ? titleDiv.children[0].data : ''
         let content = $('#nr')
-        let contentStr = ''
+        let contentStr = '    '
        // console.log(title)
         content[0].children && content[0].children.forEach((child, index) => {
             if (child.data) {      

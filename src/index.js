@@ -16,6 +16,7 @@ function downloadStory(options) {
   }).downloadStory(5)
 }
 let stories = [
+  // 下载速度最快
   {
     chapterPath: 'booktxt/99715199116/',
     storyName: '恶魔公寓',
@@ -36,4 +37,8 @@ let stories = [
     chapterPageCount: 13,
   },
 ]
-downloadStory(stories[0])
+ downloadStory(stories[0])
+
+
+
+

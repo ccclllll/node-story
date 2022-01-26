@@ -1,9 +1,7 @@
 const StoryParse = require('./core/StoryParser')
 const path = require('path')
-const dingDianStrategy = require('./strategy/Dingdian')
-const BiquStrategy = require('./strategy/BiQu')
+const biquStrategy = require('./strategy/BiQu')
 const topStrategy = require('./strategy/Top')
-
 
 function downloadStory(options) {
   let {chapterPath, storyStrategy, chapterPageCount, storyName} = options
@@ -20,25 +18,16 @@ let stories = [
   {
     chapterPath: 'booktxt/99715199116/',
     storyName: '恶魔公寓',
-    storyStrategy: BiquStrategy,
+    storyStrategy: biquStrategy,
     chapterPageCount: 1,
-
   },
   {
-    chapterPath: '86_86418/mulu/',
-    storyName: '万相之王',
+    chapterPath: '21_21089/',
+    storyName: '三寸人间',
     storyStrategy: topStrategy,
-    chapterPageCount: 10,
-  },
-  {
-    chapterPath: '10/10163/',
-    storyName: '斗罗大陆5重生唐三',
-    storyStrategy: dingDianStrategy,
-    chapterPageCount: 13,
-  },
+    chapterPageCount: 1,
+  }
 ]
- downloadStory(stories[0])
-
-
+ downloadStory(stories[1])
 
 

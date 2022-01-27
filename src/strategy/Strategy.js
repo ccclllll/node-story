@@ -38,7 +38,7 @@ Strategy.prototype.getChapterDetail = function (chapters, callback) {
             callback(null)
         } else {
             const $ = res.$;
-            let detailRes = this.parseChapterDetail($, res.request.uri.href)
+            let detailRes = this.parseChapterDetail($, res.request.uri.href,chapters[queueIndex].name)
             allContent = allContent + detailRes.content
             if (detailRes.hasNextPage) {
                 c.queue(detailRes.nextPageUrl);

@@ -62,13 +62,12 @@ StoryParse.prototype.getChapterParallel = function (start, end) {
 StoryParse.prototype.getChapterDetailParallel = function (chapters, step = 10) {
     let that = this
     let parallel = {}
-
+    // console.log(chapters)
     for (let index = 0; index < chapters.length;) {
         let end = (index + step) < chapters.length ? (index + step) : chapters.length
         let list = chapters.slice(index, end)
         let _index = index
         parallel[_index] = function (cb) {
-
             that.storyStrategy.getChapterDetail(list, (res) => {
                 cb(null, res)
             })
@@ -113,8 +112,6 @@ StoryParse.prototype.run = function (start, end, cb) {
         for (let key in result) {
             storyContent += result[key]
         }
-    
-       // storyContent = storyContent.replace(/（本章未完，请点击下一页继续阅读）/g, '')
         this.writeFile(this.filePath, storyContent)
         cb && cb()
     });

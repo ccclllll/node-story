@@ -20,21 +20,20 @@ TopStrategy.prototype.getAllChapterUrl = function () {
  * @param {*} url 
  * @returns 
  */
-TopStrategy.prototype.parseChapterDetail = function ($, url) {
-
-    let titleDiv = $('.novel')[0]
-    //console.log(titleDiv)
-    let title = titleDiv && titleDiv.children[0].children[0].data
+TopStrategy.prototype.parseChapterDetail = function ($, url, title) {
     let content = $('.yd_text2')
     let hasNextPage = false
     let contentStr = ''
-    content[0].children.forEach((child, index) => {
+    if (!content[0]) {
+        contentStr = '抱歉,本章节内容缺失...'
+    }
+    content[0] && content[0].children.forEach((child, index) => {
         if (index > 0 && child.data) {
             contentStr = contentStr + child.data
         }
     })
     let nextPageUrl = ''
-    contentStr = '    ' + title + '\r\n\r\n\r\n' + contentStr + +title
+    contentStr = '\r\n\r\n' + '    ' + title + '\r\n' + contentStr + +title
     contentStr = contentStr.replace(/NaN/g, '')
     return {
         title,
@@ -44,7 +43,6 @@ TopStrategy.prototype.parseChapterDetail = function ($, url) {
         pageIndex: 1
     }
 }
-
 
 /**
  * 解析目录页dom

@@ -9,6 +9,10 @@ function BiquStrategy(BaseUrl) {
 
 inherit(BiquStrategy, Strategy)
 
+/**
+ * 章节页
+ * @returns 
+ */
 BiquStrategy.prototype.getAllChapterUrl = function () {
     let chapterUrlList = [`${this.BASE}${this.parser.chapterPath}`]
     return chapterUrlList
@@ -24,14 +28,12 @@ BiquStrategy.prototype.parseChapterDetail = function ($, url) {
     let pre = url.replace(/\.html/, '')
     pre = pre.split('_')[0]
     let titleDiv = $('.chaptername')[0]
-    //console.log(titleDiv)
     let title = titleDiv && titleDiv.children[0] ? titleDiv.children[0].data : ''
     let content = $('#txt')
     let contentStr = '    '
     let hasNextPage = false
     content[0].children && content[0].children.forEach((child, index) => {
         let textDiv = child.next
-        // console.log(child.data)
         if (index > 0 && textDiv && textDiv.data) {
             contentStr = contentStr + textDiv.data + '\r\n'
         }
@@ -57,7 +59,6 @@ BiquStrategy.prototype.parseChapterDetail = function ($, url) {
 BiquStrategy.prototype.parseChapter = function ($) {
     let res = []
     let children = $(".cf")[3].children
-    //console.log( $(".cf"))
     children.forEach(child => {
         if (child.children && child.children[0]) {
             let item = child.children[0]

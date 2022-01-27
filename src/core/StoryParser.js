@@ -40,13 +40,12 @@ StoryParse.prototype.getCrawler = function (callback) {
  * 构建获取章节列表的并行函数列表
  * @returns parallel
  */
-StoryParse.prototype.getChapterParallel = function (start, end) {
+StoryParse.prototype.getChapterParallel = function () {
     let that = this
     let parallel = {}
-    for (let index = 0; index < end - start; index++) {
-
+    for (let index = 0; index < that.chapterUrlList.length; index++) {
         parallel[index] = function (cb) {
-            that.storyStrategy.getChapter(that.chapterUrlList[index + start], (res) => {
+            that.storyStrategy.getChapter(that.chapterUrlList[index], (res) => {
                 cb(null, res)
             })
         }
@@ -62,7 +61,6 @@ StoryParse.prototype.getChapterParallel = function (start, end) {
 StoryParse.prototype.getChapterDetailParallel = function (chapters, step = 10) {
     let that = this
     let parallel = {}
-    // console.log(chapters)
     for (let index = 0; index < chapters.length;) {
         let end = (index + step) < chapters.length ? (index + step) : chapters.length
         let list = chapters.slice(index, end)
@@ -77,15 +75,13 @@ StoryParse.prototype.getChapterDetailParallel = function (chapters, step = 10) {
     return parallel
 }
 
-StoryParse.prototype.run = function (start, end, cb) {
+StoryParse.prototype.run = function (cb) {
     const that = this
-    let chapterParallel = this.getChapterParallel(start, end)
-
+    let chapterParallel = this.getChapterParallel()
     const waterfallList = [
         // 获取所有章节
         function (done) {
             console.log('正在获取章节列表...')
-
             async.parallel(chapterParallel, function (err, result) {
                 console.log('获取章节列表成功...')
                 done(err, result) //将结果写入result
@@ -96,15 +92,12 @@ StoryParse.prototype.run = function (start, end, cb) {
             for (let key in result) {
                 chapters = [...chapters, ...result[key]]
             }
-
-             //console.log(chapters)
             let contentParallel = that.getChapterDetailParallel(chapters, that.step)
             console.log('正在获取小说内容...')
             async.parallel(contentParallel, function (err, result) {
                 console.log('获取小说内容成功...')
                 done(err, result) //将结果写入result
             });
-
         },
     ];
     async.waterfall(waterfallList, (error, result) => {
@@ -135,28 +128,11 @@ StoryParse.prototype.writeFile = function (filePath, str) {
 StoryParse.prototype.downloadStory = function (step) {
     let start = new Date()
     console.log('开始...')
-    let per = step
-    let that = this
-    let waterfallList = []
-    let perCount = 1
-    for (let index = 0; index < this.chapterPageCount;) {
-        let endPage = (index + per) < this.chapterPageCount ? (index + per) : this.chapterPageCount
-        let startPage = index
-        let count = perCount
-        waterfallList.push(function (...args) {
-            console.log(`正在下载第${count}段内容`)
-            that.run(startPage, endPage, () => {
-                args[args.length - 1]()
-            })
-        })
-        perCount = perCount + 1
-        index = endPage
-    }
-    
-    async.waterfall(waterfallList, (error, result) => {
+    this.run( () => {
         let end = new Date()
         console.log('小说生成成功，总耗时:' + (end.getTime() - start.getTime()))
-    });
+    })
+
 }
 
 module.exports = StoryParse
